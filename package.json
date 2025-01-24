@@ -15,7 +15,7 @@
     "@types/react-datepicker": "^7.0.0",
     "chart.js": "^4.4.6",
     "framer-motion": "^11.11.17",
-    "next": "15.0.3",
+    "next": "^15.1.6",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-chartjs-2": "^5.2.0",
     "react-datepicker": "^7.5.0",
