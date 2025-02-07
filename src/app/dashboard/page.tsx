@@ -21,6 +21,7 @@ import {
 } from 'chart.js';
 import SkillCreationForm from '@/components/SkillCreationForm'
 import { useSkillPoints } from '@/hooks/useSkillPoints'
+import Link from 'next/link'
 
 // Register ChartJS components
 ChartJS.register(
@@ -118,20 +119,16 @@ interface SkillData {
 // Add this interface with your other interfaces
 interface AdjustmentModal {
   original: Skill;
-  adjusted: {
-    name: string;
-    description: string;
-    requiredPoints: number;
-  };
+  adjusted: any;
   feedback: string;
 }
 
 // Add this interface near your other interfaces
 interface ConfirmationModal {
-  feedback: string;
-  points: number;
-  icon: string;
   skill: Skill;
+  points: number;
+  feedback: string;
+  icon: string;
 }
 
 const calendarStyles = `
@@ -771,7 +768,7 @@ const handleSkillValidation = async (
     );
 
     if (!validation.isValid) {
-      setFeedback({
+      onFeedback({
         type: 'error',
         message: validation.feedback
       });
@@ -779,17 +776,17 @@ const handleSkillValidation = async (
     }
 
     if (validation.requiredPoints > currentStats.skill_points) {
-      setShowAdjustmentModal({
+      onShowAdjustment({
         original: newSkill,
         adjusted: validation.adjustedVersion,
         feedback: validation.feedback
       });
     } else {
-      setShowConfirmationModal({
+      onShowConfirmation({
         skill: newSkill,
         points: validation.requiredPoints,
         feedback: validation.feedback,
-        icon: validation.icon
+        icon: validation.icon || '⚡'  // Default icon if undefined
       });
     }
   } catch (error) {
@@ -869,7 +866,7 @@ const createSkill = async (
       skill_name: newSkill.name,
       skill_description: newSkill.description,
       skill_level: 1,
-      skill_icon: validation.icon,
+      skill_icon: validation.icon || '⚡',  // Default icon if undefined
       power_level: validation.powerLevel
     });
 
@@ -882,7 +879,7 @@ const createSkill = async (
         skill_name: newSkill.name,
         skill_description: newSkill.description,
         skill_level: 1,
-        skill_icon: validation.icon,
+        skill_icon: validation.icon || '⚡',  // Default icon if undefined
         power_level: validation.powerLevel
       }])
       .select();
@@ -1467,6 +1464,21 @@ export default function DashboardPage() {
       <div className="fixed inset-0 bg-gradient-to-b from-[#00220011] via-[#44dd4422] to-[#00220011] animate-pulse"></div>
 
       <div className="container relative mx-auto px-4 py-8 z-10">
+        {/* Add navigation button */}
+        <div className="flex justify-end mb-4">
+          <Link href="/home">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-6 py-3 bg-black/30 border-2 border-[#44dd44] text-[#44dd44] 
+                         hover:bg-[#44dd44] hover:text-black transition-colors
+                         shadow-[4px_4px_0px_0px_#44dd44]"
+            >
+              COMMAND CENTER →
+            </motion.button>
+          </Link>
+        </div>
+
         {isLoading ? (
           <div className="text-center text-[#44dd44]">Loading...</div>
         ) : userStats && userProfile ? (
