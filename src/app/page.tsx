@@ -16,6 +16,12 @@ export default function LoginPage() {
   const router = useRouter()
   const supabase = createClientComponentClient()
 
+  const frameGlitchOrigins = Array(6).fill(0).map(() => ({
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    isBrighter: Math.random() > 0.5
+  }))
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
@@ -129,18 +135,18 @@ export default function LoginPage() {
                      before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(68,221,68,0.1)_50%,transparent_75%)] before:bg-[length:200%_200%] before:animate-gradient"
         >
           <>
-            {[...Array(6)].map((_, i) => (
+            {frameGlitchOrigins.map((origin, i) => (
               <motion.div
                 key={i}
                 variants={frameGlitchVariants}
                 initial="initial"
                 animate="animate"
                 className={`absolute inset-0 border-2 opacity-0
-                           ${Math.random() > 0.5 ? 'border-[#88ff88]' : 'border-[#44dd44]'}`}
+                           ${origin.isBrighter ? 'border-[#88ff88]' : 'border-[#44dd44]'}`}
                 style={{
                   clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
                   filter: 'blur(0.5px)',
-                  transformOrigin: `${Math.random() * 100}% ${Math.random() * 100}%`,
+                  transformOrigin: `${origin.x}% ${origin.y}%`,
                 }}
               />
             ))}

@@ -1,0 +1,20 @@
+.calendar-page {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.calendar-container {
+  flex: 1;
+}
+
+.task-indicators {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.status-completed { color: #22c55e; }
+.status-pending { color: #eab308; }
+.status-missed { color: #ef4444; } 
